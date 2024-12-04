@@ -418,8 +418,50 @@ function rotateMatrix(matrix) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
+function sortByAsc(arr) {
+  function replace(items, firstIndex, secondIndex) {
+    const coptyItems = items;
+    const temp = coptyItems[firstIndex];
+    coptyItems[firstIndex] = coptyItems[secondIndex];
+    coptyItems[secondIndex] = temp;
+  }
+
+  function partition(items, left, right) {
+    const pivot = items[Math.floor((right + left) / 2)];
+    let i = left;
+    let j = right;
+
+    while (i <= j) {
+      while (items[i] < pivot) {
+        i += 1;
+      }
+      while (items[j] > pivot) {
+        j -= 1;
+      }
+      if (i <= j) {
+        replace(items, i, j);
+        i += 1;
+        j -= 1;
+      }
+    }
+    return i;
+  }
+
+  function quickSort(array, left, right) {
+    let index;
+    if (array.length > 1) {
+      index = partition(array, left, right);
+      if (left < index - 1) {
+        quickSort(array, left, index - 1);
+      }
+      if (index < right) {
+        quickSort(array, index, right);
+      }
+    }
+    return array;
+  }
+
+  return quickSort(arr, 0, arr.length - 1);
 }
 
 /**
@@ -439,8 +481,31 @@ function sortByAsc(/* arr */) {
  *  '012345', 3 => '024135' => '043215' => '031425'
  *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey'
  */
-function shuffleChar(/* str, iterations */) {
-  throw new Error('Not implemented');
+function shuffleChar(str, iterations) {
+  let copyStr = str;
+  let copyIterations = iterations;
+
+  while (copyIterations > 0) {
+    let newStr = '';
+    let shiftedChars = '';
+
+    for (let i = 0; i < copyStr.length; i += 1) {
+      if (i % 2 !== 0) {
+        shiftedChars += copyStr[i];
+      } else {
+        newStr += copyStr[i];
+      }
+    }
+
+    copyStr = newStr + shiftedChars;
+    copyIterations -= 1;
+
+    if (copyStr === str) {
+      copyIterations = iterations % (iterations - copyIterations);
+    }
+  }
+
+  return copyStr;
 }
 
 /**
@@ -460,8 +525,29 @@ function shuffleChar(/* str, iterations */) {
  * @param {number} number The source number
  * @returns {number} The nearest larger number, or original number if none exists.
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+function getNearestBigger(number) {
+  const arrFromNums = Array.from(String(number));
+  let index = arrFromNums.length - 1;
+  let leftIndex = arrFromNums.length - 1;
+
+  while (index > 0 && arrFromNums[index - 1] >= arrFromNums[index]) {
+    index -= 1;
+  }
+
+  if (index === 0) return number;
+
+  while (arrFromNums[leftIndex] <= arrFromNums[index - 1]) {
+    leftIndex -= 1;
+  }
+
+  const temp = arrFromNums[leftIndex];
+  arrFromNums[leftIndex] = arrFromNums[index - 1];
+  arrFromNums[index - 1] = temp;
+
+  const leftPart = arrFromNums.splice(index).sort();
+  const maxNum = arrFromNums.join('') + leftPart.join('');
+
+  return Number(maxNum);
 }
 
 module.exports = {
