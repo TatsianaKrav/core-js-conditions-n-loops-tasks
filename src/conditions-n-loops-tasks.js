@@ -281,8 +281,28 @@ function isContainNumber(num, digit) {
  *  [2, 3, 9, 5] => 2       => 2 + 3 === 5 then balance element is 9 and its index = 2
  *  [1, 2, 3, 4, 5] => -1   => no balance element
  */
-function getBalanceIndex(/* arr */) {
-  throw new Error('Not implemented');
+function getBalanceIndex(arr) {
+  let sumRigth = 0;
+  let sumLeft = 0;
+
+  for (let i = 0; i < arr.length; i += 1) {
+    for (let j = 0; j < i; j += 1) {
+      sumRigth += arr[j];
+    }
+
+    for (let l = i + 1; l < arr.length; l += 1) {
+      sumLeft += arr[l];
+    }
+
+    if (sumRigth === sumLeft) {
+      return i;
+    }
+
+    sumRigth = 0;
+    sumLeft = 0;
+  }
+
+  return -1;
 }
 
 /**
@@ -306,8 +326,48 @@ function getBalanceIndex(/* arr */) {
  *          [10, 9,  8,  7]
  *        ]
  */
-function getSpiralMatrix(/* size */) {
-  throw new Error('Not implemented');
+function getSpiralMatrix(size) {
+  const matrix = new Array(size);
+  let count = 1;
+  let startCol = 0;
+  let endCol = size - 1;
+  let startRow = 0;
+  let endRow = size - 1;
+
+  for (let i = 0; i < size; i += 1) {
+    matrix[i] = [];
+  }
+
+  while (startCol <= endCol && startRow <= endRow) {
+    for (let i = startCol; i <= endCol; i += 1) {
+      matrix[startRow][i] = count;
+      count += 1;
+    }
+    startRow += 1;
+
+    for (let j = startRow; j <= endRow; j += 1) {
+      matrix[j][endCol] = count;
+      count += 1;
+    }
+
+    endCol -= 1;
+
+    for (let l = endCol; l >= startCol; l -= 1) {
+      matrix[endRow][l] = count;
+      count += 1;
+    }
+
+    endRow -= 1;
+
+    for (let n = endRow; n >= startRow; n -= 1) {
+      matrix[n][startCol] = count;
+      count += 1;
+    }
+
+    startCol += 1;
+  }
+
+  return matrix;
 }
 
 /**
@@ -325,8 +385,23 @@ function getSpiralMatrix(/* size */) {
  *    [7, 8, 9]         [9, 6, 3]
  *  ]                 ]
  */
-function rotateMatrix(/* matrix */) {
-  throw new Error('Not implemented');
+function rotateMatrix(matrix) {
+  const matrixLength = matrix.length;
+  const matrixCopy = matrix;
+
+  for (let i = 0; i < matrixLength / 2; i += 1) {
+    for (let j = i; j < matrixLength - i - 1; j += 1) {
+      const tmp = matrixCopy[i][j];
+      matrixCopy[i][j] = matrixCopy[matrixLength - j - 1][i];
+      matrixCopy[matrixLength - j - 1][i] =
+        matrixCopy[matrixLength - i - 1][matrixLength - j - 1];
+      matrixCopy[matrixLength - i - 1][matrixLength - j - 1] =
+        matrixCopy[j][matrixLength - i - 1];
+      matrixCopy[j][matrixLength - i - 1] = tmp;
+    }
+  }
+
+  return matrixCopy;
 }
 
 /**
