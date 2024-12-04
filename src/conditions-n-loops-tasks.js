@@ -87,8 +87,18 @@ function canQueenCaptureKing(queen, king) {
  *  2, 2, 5   => false
  *  3, 0, 3   => false
  */
-function isIsoscelesTriangle(/* a, b, c */) {
-  throw new Error('Not implemented');
+function isIsoscelesTriangle(a, b, c) {
+  if (a === b) {
+    return a + b > c && c > 0;
+  }
+  if (a === c) {
+    return a + c > b && b > 0;
+  }
+  if (b === c) {
+    return b + c > a && a > 0;
+  }
+
+  return false;
 }
 
 /**
@@ -105,8 +115,22 @@ function isIsoscelesTriangle(/* a, b, c */) {
  *  10  => X
  *  26  => XXVI
  */
-function convertToRomanNumerals(/* num */) {
-  throw new Error('Not implemented');
+function convertToRomanNumerals(num) {
+  let number = num;
+
+  const keys = ['X', 'IX', 'V', 'IV', 'I'];
+  const values = [10, 9, 5, 4, 1];
+
+  let str = '';
+
+  for (let i = 0; i < keys.length; i += 1) {
+    while (number >= values[i]) {
+      str += keys[i];
+      number -= values[i];
+    }
+  }
+
+  return str;
 }
 
 /**
@@ -124,8 +148,53 @@ function convertToRomanNumerals(/* num */) {
  *  '10,5'    => 'one zero point five'
  *  '1950.2'  => 'one nine five zero point two'
  */
-function convertNumberToString(/* numberStr */) {
-  throw new Error('Not implemented');
+function convertNumberToString(numberStr) {
+  let str = '';
+  for (let i = 0; i < numberStr.length; i += 1) {
+    switch (numberStr[i]) {
+      case '-':
+        str += 'minus ';
+        break;
+      case '0':
+        str += i === numberStr.length - 1 ? 'zero' : 'zero ';
+        break;
+      case '1':
+        str += i === numberStr.length - 1 ? 'one' : 'one ';
+        break;
+      case '2':
+        str += i === numberStr.length - 1 ? 'two' : 'two ';
+        break;
+      case '3':
+        str += i === numberStr.length - 1 ? 'three' : 'three ';
+        break;
+      case '4':
+        str += i === numberStr.length - 1 ? 'four' : 'four ';
+        break;
+      case '5':
+        str += i === numberStr.length - 1 ? 'five' : 'five ';
+        break;
+      case '6':
+        str += i === numberStr.length - 1 ? 'six' : 'six ';
+        break;
+      case '7':
+        str += i === numberStr.length - 1 ? 'seven' : 'seven ';
+        break;
+      case '8':
+        str += i === numberStr.length - 1 ? 'eight' : 'eight ';
+        break;
+      case '9':
+        str += i === numberStr.length - 1 ? 'nine' : 'nine ';
+        break;
+      case '.':
+      case ',':
+        str += 'point ';
+        break;
+      default:
+        str = '';
+    }
+  }
+
+  return str;
 }
 
 /**
